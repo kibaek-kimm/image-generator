@@ -82,13 +82,23 @@ btnSubmit.addEventListener('click', function(event) {
 	requestData.append('bg_color', [fieldColor.value]);
 	requestData.append('ext_type', fieldExtType.value);
 
-	fetch('http://127.0.0.1:8082/generate', {
+	const jsonRequestData = {
+		width: fieldWidthSize.value,
+		height: fieldHeightSize.value,
+		is_square: checkSquare.checked,
+		bg_color: ['#' + fieldColor.value],
+		ext_type: fieldExtType.value,
+	};
+
+
+	fetch('http://127.0.0.1:8082/api/v1/generate', {
 		method: 'POST',
 		headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       },
-        body: requestData
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+				// body: requestData
+		body: JSON.stringify(jsonRequestData)
 	})
 		.then(function(response) {
 			return response.json();
