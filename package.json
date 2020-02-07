@@ -1,7 +1,7 @@
 {
   "name": "generate-image",
   "version": "1.0.0",
-  "description": "단일 색상을 가지고 있는 이미지 생성기",
+  "description": "단일색상 이미지 생성기",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
