@@ -15,27 +15,24 @@ const PORT 				= 8082;
  * @param {*} dirPath 
  * @param {*} extType 
  */
-var generateImages = function({
+const generateImages = async ({
 	width,
 	height,
 	bgColorList,
 	extType,
 	dirPath
-}) {
+}) => {
 
-	bgColorList.map(function(bgColor, index) {
-		new Jimp(width, height, bgColor, function(err, image) {
-			if (err) throw err
-	
-			image.writeAsync(`${dirPath}/${bgColor}.${extType}`)
-				.catch(err => {
-					console.error('[Jimp ERROR] \n', err);
-				})
-		});
-	});
+	const result = await Promise.all(
+		bgColorList.map(async (bgColor, index) => {
+			const image = new Jimp(width, height, bgColor)
+			const resutlGen = await image.writeAsync(`${dirPath}/${bgColor}.${extType}`);
+			return resutlGen;
+		})   
+	)
 }
 
-var getImageMimeType = function(val) {
+const getImageMimeType = val => {
 	switch(val) {
 		case 'png':
 			return 'image/png';
@@ -48,18 +45,18 @@ var getImageMimeType = function(val) {
 
 app2.use(bodyParser.json())
 app2.use('/api/v1', router)
-app2.use(function timeLog(req, res, next) {
+app2.use((req, res, next) => {
 	console.log('Time: ', Date.now());
 	next();
 })
 
-router.post('/generate', async function (req, res) {
-	// var mimeType = getImageMimeType(req.body.ext_type);
-	var extType = req.body.ext_type;
-	var width = req.body.width
-	var height = req.body.is_square ? req.body.width : req.body.height
-	var bgColor = req.body.bg_color
-	var newDirName = Date.now();
+router.post('/generate', (req, res) => {
+	// const mimeType = getImageMimeType(req.body.ext_type);
+	const extType = req.body.ext_type;
+	const width = req.body.width
+	const height = req.body.is_square ? req.body.width : req.body.height
+	const bgColor = req.body.bg_color
+	const newDirName = Date.now();
 
 	res.setHeader('Content-Type', 'application/json');
 
@@ -71,7 +68,7 @@ router.post('/generate', async function (req, res) {
 		fs.mkdirSync(`${process.env.TARGET_DIR}${newDirName}`);
 	}
 	
-	var result = await generateImages({
+	const result = generateImages({
 		width,
 		height,
 		extType,
@@ -79,9 +76,18 @@ router.post('/generate', async function (req, res) {
 		dirPath: `${process.env.TARGET_DIR}${newDirName}`
 	});
 
-	res.status(200).send('success');
+	result.then(result => {
+    res.status(200).send({
+      data: 'success'
+    })  
+  })
+  .catch(err => {
+    res.status(500).send({
+      data: 'fail'
+    })
+  })
 });
 
-app2.listen(PORT, function () {
+app2.listen(PORT, () => {
 	console.log('test : http://127.0.0.1:' + PORT + '/');
 });

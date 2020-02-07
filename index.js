@@ -8,8 +8,31 @@ process.env.TARGET_DIR = path.join(__dirname, '/etr_tmp/');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
-function removeDir(callback) {
-	fs.rmdir(process.env.TARGET_DIR, callback);
+const removeDir = function(path, callback) {
+	if (fs.existsSync(path)) {
+		const files = fs.readdirSync(path)
+
+		if (files.length > 0) {
+
+			files.forEach(function(filename) {
+				if (fs.statSync(path + "/" + filename).isDirectory()) {
+					removeDir(path + "/" + filename)
+				} else {
+					fs.unlinkSync(path + "/" + filename)
+				}
+			})
+
+			fs.rmdirSync(path)
+		} else {
+			fs.rmdirSync(path)
+		}
+		
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	} else {
+		console.log("Directory path not found.")
+	}
 }
 
 function createWindow () {
@@ -34,7 +57,7 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
 		win = null
-		removeDir(function() {
+		removeDir(process.env.TARGET_DIR, function() {
 			app.quit()
 		})
   })
@@ -50,7 +73,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    removeDir(function() {
+    removeDir(process.env.TARGET_DIR, function() {
 			app.quit()
 		})
   }
