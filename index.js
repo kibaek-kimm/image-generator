@@ -9,30 +9,30 @@ process.env.TARGET_DIR = path.join(__dirname, '/etr_tmp/');
 // be closed automatically when the JavaScript object is garbage collected.
 
 const removeDir = function(path, callback) {
-	if (fs.existsSync(path)) {
-		const files = fs.readdirSync(path)
+  if (fs.existsSync(path)) {
+    const files = fs.readdirSync(path)
 
-		if (files.length > 0) {
+    if (files.length > 0) {
 
-			files.forEach(function(filename) {
-				if (fs.statSync(path + "/" + filename).isDirectory()) {
-					removeDir(path + "/" + filename)
-				} else {
-					fs.unlinkSync(path + "/" + filename)
-				}
-			})
+      files.forEach(function(filename) {
+        if (fs.statSync(path + "/" + filename).isDirectory()) {
+          removeDir(path + "/" + filename)
+        } else {
+          fs.unlinkSync(path + "/" + filename)
+        }
+      })
 
-			fs.rmdirSync(path)
-		} else {
-			fs.rmdirSync(path)
-		}
-		
-		if (callback && typeof callback === 'function') {
-			callback();
-		}
-	} else {
-		console.log("Directory path not found.")
-	}
+      fs.rmdirSync(path)
+    } else {
+      fs.rmdirSync(path)
+    }
+    
+    if (callback && typeof callback === 'function') {
+      callback();
+    }
+  } else {
+    console.log("Directory path not found.")
+  }
 }
 
 function createWindow () {
@@ -56,10 +56,10 @@ function createWindow () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-		win = null
-		removeDir(process.env.TARGET_DIR, function() {
-			app.quit()
-		})
+    win = null
+    removeDir(process.env.TARGET_DIR, function() {
+      app.quit()
+    })
   })
 }
 
@@ -74,8 +74,8 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     removeDir(process.env.TARGET_DIR, function() {
-			app.quit()
-		})
+      app.quit()
+    })
   }
 })
 
@@ -83,7 +83,7 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
-		createWindow()
+    createWindow()
   }
 })
 
