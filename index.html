@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="public/css/bootstrap.css">
     <link rel="stylesheet" href="public/css/bootstrap-reboot.css">
+
   </head>
   <body>
     <!-- We are using node <script>document.write(process.versions.node)</script>,
@@ -31,33 +32,56 @@
             <input type="checkbox" class="form-check-input" id="check_square" checked>
             <label class="form-check-label" for="check_square">정사각형 사이즈</label>
           </div>
-				</div>
-
-				<div class="form-group">
-					<label for="img_ext_type">이미지 확장자</label>
-					<select class="form-control" id="img_ext_type">
-						<option selected>jpg</option>
-						<option>png</option>
-						<option>gif</option>
-					</select>
-				</div>
+        </div>
 
         <div class="form-group">
-          <label for="color_picker">이미지 배경색</label>
-
-          <div class="row">
-            <div class="col-10" style="position: relative;">
-              <span style="position: absolute; top: 7px; left: 28px;">#</span>
-              <input type="text" class="form-control" id="color_text" placeholder="fff" maxLength="6" style="padding-left: 24px;">  
+          <label for="img_ext_type">이미지 확장자</label>
+          <select class="form-control" id="img_ext_type">
+            <option selected>jpg</option>
+            <option>png</option>
+            <option>gif</option>
+          </select>
+        </div>
+        
+        <ul class="nav nav-tabs" id="gen-mode-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="excel-tab" data-toggle="tab" role="tab" aria-controls="excel" aria-selected="true">Excel파일 업로드</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="custom-tab" data-toggle="tab" role="tab" aria-controls="custom" aria-selected="false">직접 입력</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="excel-tab-content" role="tabpanel" aria-labelledby="excel-tab">
+            <div class="form-group">
+              <label for="excel_upload">엑셀파일 업로드</label>
+    
+              <div class="row">
+                <div class="col-10" style="position: relative;">
+                  <input type="file" id="xlsx_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                </div>
+              </div>
             </div>
-            <div class="col-2">
-              <input type="color" class="form-control" id="color_picker" disabled="disabled">
+          </div>
+          <div class="tab-pane fade" id="custom-tab-content" role="tabpanel" aria-labelledby="custom-tab">
+            <div class="form-group">
+              <label for="color_picker">이미지 배경색</label>
+    
+              <div class="row">
+                <div class="col-10" style="position: relative;">
+                  <span style="position: absolute; top: 7px; left: 28px;">#</span>
+                  <input type="text" class="form-control" id="color_text" placeholder="fff" maxLength="6" style="padding-left: 24px;">  
+                </div>
+                <div class="col-2">
+                  <input type="color" class="form-control" id="color_picker" disabled="disabled">
+                </div>
+              </div>
+    
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="select_color_type" checked>
+                <label class="form-check-label" for="select_color_type">컬러값 직접입력</label>
+              </div>
             </div>
-					</div>
-
-          <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="select_color_type" checked>
-            <label class="form-check-label" for="select_color_type">컬러값 직접입력</label>
           </div>
         </div>
 
@@ -78,9 +102,7 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="public/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="public/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="public/js/libs/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="public/js/custom.js"></script>
   </body>
 </html>
