@@ -3,7 +3,7 @@ const fs = require('fs')
 const { app, BrowserWindow } = require('electron')
 
 // Global target directory name
-process.env.TARGET_DIR = path.join(__dirname, '/etr_tmp/');
+process.env.TARGET_DIR = path.join(__dirname, '/uploads/');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
