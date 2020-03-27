@@ -5,17 +5,33 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "build": "parcel build index.html --no-cache --no-source-maps --out-dir build --public-url ./ --target electron .",
+    "dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "start": "parcel index.html --port 3000 --out-dir build",
+    "el": "electron ."
   },
-  "author": "Santelglobal",
+  "author": "kibaem-kimm",
   "license": "ISC",
   "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
     "archiver": "^3.1.1",
     "body-parser": "^1.19.0",
     "electron": "^7.1.11",
-    "express": "^4.17.1",
     "formidable": "^1.2.2",
     "jimp": "^0.9.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "xlsx": "^0.15.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "concurrently": "^5.1.0",
+    "electron-is-dev": "^1.1.0",
+    "parcel": "^1.12.4",
+    "typescript": "^3.8.3",
+    "wait-on": "^4.0.1"
   }
 }
