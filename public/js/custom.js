@@ -1,3 +1,6 @@
+var {dialog} = require('electron').remote;
+var fs = require('fs');
+
 // $(document).ready(function() {
   var mode = 'excel'; // excel or custom
   var elemLoading = document.getElementById('loading-layer');
@@ -71,44 +74,53 @@
     elemLoading.style.display = 'block';
 
     const requestData = new FormData();
-    requestData.append('width', fieldWidthSize.value);
-    requestData.append('height', fieldHeightSize.value);
-    requestData.append('is_square', checkSquare.checked);
-    // requestData.append('bg_color', [fieldColor.value]);
-    requestData.append('ext_type', fieldExtType.value);
     requestData.append('xlsx_file', xlsxFile.files[0]);
 
-    const jsonRequestData = {
-      width: fieldWidthSize.value,
-      height: fieldHeightSize.value,
-      is_square: checkSquare.checked,
-      // bg_color: ['#' + fieldColor.value],
-      ext_type: fieldExtType.value,
-      xlsx_file: xlsxFile.files[0]
-    };
-
-    console.log(jsonRequestData);
-
-    fetch('http://127.0.0.1:8082/api/v1/generate', {
+    fetch('http://127.0.0.1:8082/api/v1/metadata', {
       method: 'POST',
-      // headers : { 
-      //   'Content-Type': 'application/json',
-      //   'Accept': 'application/json'
-      // },
-          // body: requestData
-      body: requestData
-    })
-      .then(function(response) {
-        return response.json();
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        width: fieldWidthSize.value,
+        height: fieldHeightSize.value,
+        ext: fieldExtType.value 
       })
-      .then(function(json) {
-        var image = new Image();
-        image.onload = function() {
-          ctx.drawImage(image, 0, 0);
-          elemLoading.style.display = 'none';
-        };
-        image.src = json.data;
-      });
+    })
+    .then(function() {
+      fetch('http://127.0.0.1:8082/api/v1/generate', {
+        method: 'POST',
+        body: requestData
+      })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          console.log(json);
+          elemLoading.style.display = 'none'
+
+          if (json.status === 'fail') {
+            alert(json.message);
+            return false;
+          }
+
+          dialog.showSaveDialog(() => {
+            fs.writeFile('colors.zip', json.link,);
+          });
+          // var a = document.createElement('a');
+          // a.href = json.link;
+          // a.download = json.link;
+          // a.style.display = 'none';
+          // document.body.appendChild(a);
+          // a.click();
+          // // delete a;
+        })
+        .catch(err => {
+          console.log(err)
+          alert('ERROR!!!');
+        })
+    })
   };
 
   colorPicker.addEventListener('change', function(event) {
