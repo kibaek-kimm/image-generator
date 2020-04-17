@@ -1,28 +1,33 @@
 import * as React from 'react'
-import xlsx from 'xlsx';
+import { Container, Button, CircularProgress } from '@material-ui/core';
+import * as styles from './styled.ts'
+import Table from '../components/Table'
+import FileDragDrop from '../components/FileDragDrop'
+import {getColorSheetData} from './common'
 
 const Main = () => {
   const {useState, useEffect} = React;
-  const handleUploadFile = e => {
-    const file = e.currentTarget.files[0];
-    const sheetData = xlsx.readFile(file.path);
-    console.log(file);
+  const handleUploadFile = file => {
+    const data = getColorSheetData(file.path);
+    console.log(data);
+    console.log(file)
   };
 
   useEffect(() => {
-    console.log(1111);
-    window.ipcRenderer.on('pong', (event, arg) => {
-      console.log(args)
-    })
-    window.ipcRenderer.send('ping')
+    console.log(11111);
+
   }, []);
 
   return (
-    <div>
-      <label htmlFor="test">엑셀파일 업로드</label>
-      <input type="file" onChange={handleUploadFile}/>
-
-    </div>
+    <Container>
+      <h1>Image Generator</h1>
+      <FileDragDrop onFileChange={e => handleUploadFile(e)}/>
+      
+      {/* <Table /> */}
+      {/* <styles.ButtonArea>
+        <Button variant="contained" color="primary">Default</Button>
+      </styles.ButtonArea> */}
+    </Container>
   )
 }
 
