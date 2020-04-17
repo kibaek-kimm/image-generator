@@ -13,8 +13,7 @@
   "author": "kibaem-kimm",
   "license": "ISC",
   "dependencies": {
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
+    "@material-ui/core": "^4.9.10",
     "archiver": "^3.1.1",
     "body-parser": "^1.19.0",
     "electron": "^7.1.11",
@@ -22,6 +21,7 @@
     "jimp": "^0.9.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "styled-components": "^5.1.0",
     "xlsx": "^0.15.6"
   },
   "devDependencies": {
