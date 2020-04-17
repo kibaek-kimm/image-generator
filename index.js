@@ -11,19 +11,22 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration: true
     }
   })
 
   // and load the index.html of the app.
-  if (isDev) {
-    // DEVELOPMENT mode
-    mainWindow.loadURL('http://localhost:3000')
-  } else {
+  // if (isDev) {
+  //   // DEVELOPMENT mode
+  //   console.log('DEVELOPMENT');
+  //   mainWindow.loadURL('http://localhost:3000')
+  //   mainWindow.webContents.openDevTools()
+  // } else {
     // PRODUCTION mode
-    mainWindow.loadFile('index.html')
-  }
+    console.log('PRODUCTION');
+    mainWindow.loadFile(path.join(__dirname, 'build/index.html'))
+    // mainWindow.loadURL(path.join(__dirname, 'build/index.html'))
+  // }
   
 
   // Open the DevTools.
